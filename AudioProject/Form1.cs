@@ -65,8 +65,30 @@ namespace AudioProject
         //Audio Properties
         private void button5_Click(object sender, EventArgs e)
         {
+            FileInfo fileInfo = new FileInfo(audioFile);
 
-        }
+           
+            double fileSizeInMB = (double)fileInfo.Length / (1024 * 1024);
+
+            string encodingType = fileInfo.Extension.ToUpper().Replace(".", "");
+
+            TimeSpan duration = audioFileReader.TotalTime;
+            
+            int sampleRate = audioFileReader.WaveFormat.SampleRate;
+            int channels = audioFileReader.WaveFormat.Channels;
+            int bitrate = audioFileReader.WaveFormat.BitsPerSample;
+
+            string infoMessage = $" Audio Attribute:\n\n" +
+                                 $" FileSize: {fileSizeInMB:F2} MB\n" +
+                                 $" Duration : {duration.Minutes}:{duration.Seconds:D2} Minutes\n" +
+                                 $" Sample Rate: {sampleRate} Hz\n" +
+                                 $" Channels: {channels}\n" +
+                                 $" Bit Rate: {bitrate} bits\n" +
+                                 $" Encoding: {encodingType}";
+
+            MessageBox.Show(infoMessage, "", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        
+    }
 
       
 
