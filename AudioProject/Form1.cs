@@ -157,7 +157,7 @@ namespace AudioProject
                 Path.GetDirectoryName(audioFile),
                 Path.GetFileNameWithoutExtension(audioFile) + "_Delta.raw");
 
-            int stepSize = 200;      // خطوة معقولة كبداية
+            int stepSize = 500;      
             int predictedValue = 0;
 
             string tableText = "📋 أول 10 عينات:\n";
@@ -196,7 +196,6 @@ namespace AudioProject
                             predictedValue -= stepSize;
                         }
 
-                        // تخزين البت داخل البايت
                         packedByte |= (byte)(bitResult << bitPosition);
                         bitPosition++;
 
@@ -217,7 +216,7 @@ namespace AudioProject
                     }
                 }
 
-                // كتابة آخر بايت إذا لم يكتمل
+              
                 if (bitPosition > 0)
                 {
                     writer.Write(packedByte);
@@ -297,12 +296,12 @@ namespace AudioProject
                             predictedValue -= stepSize;
                         }
 
-                        // Adaptive Step Size
+                        
                         if (previousBit != -1)
                         {
                             if (currentBit == previousBit)
                             {
-                                // نفس الاتجاه → كبر الخطوة
+                               
                                 stepSize *= 2;
 
                                 if (stepSize > maxStep)
@@ -310,7 +309,7 @@ namespace AudioProject
                             }
                             else
                             {
-                                // انعكاس الاتجاه → صغر الخطوة
+                               
                                 stepSize /= 2;
 
                                 if (stepSize < minStep)
@@ -320,7 +319,6 @@ namespace AudioProject
 
                         previousBit = currentBit;
 
-                        // تخزين البتات داخل Bytes
                         packedByte |= (byte)(currentBit << bitPosition);
                         bitPosition++;
 
@@ -331,7 +329,6 @@ namespace AudioProject
                             bitPosition = 0;
                         }
 
-                        // طباعة أول 10 عينات
                         if (printCounter < 10)
                         {
                             tableText +=
