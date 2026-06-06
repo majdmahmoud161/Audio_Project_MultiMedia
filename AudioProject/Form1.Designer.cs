@@ -31,13 +31,18 @@
             button1 = new Button();
             button2 = new Button();
             button5 = new Button();
+            button3 = new Button();
+            button4 = new Button();
+            button6 = new Button();
+            button7 = new Button();
             SuspendLayout();
             // 
             // button1
             // 
-            button1.Location = new Point(12, 12);
+            button1.Location = new Point(10, 9);
+            button1.Margin = new Padding(3, 2, 3, 2);
             button1.Name = "button1";
-            button1.Size = new Size(244, 102);
+            button1.Size = new Size(214, 76);
             button1.TabIndex = 0;
             button1.Text = "Load Audio File";
             button1.UseVisualStyleBackColor = true;
@@ -45,9 +50,10 @@
             // 
             // button2
             // 
-            button2.Location = new Point(12, 129);
+            button2.Location = new Point(10, 97);
+            button2.Margin = new Padding(3, 2, 3, 2);
             button2.Name = "button2";
-            button2.Size = new Size(244, 128);
+            button2.Size = new Size(214, 96);
             button2.TabIndex = 1;
             button2.Text = "PlayAudio";
             button2.UseVisualStyleBackColor = true;
@@ -55,23 +61,69 @@
             // 
             // button5
             // 
-            button5.Location = new Point(12, 281);
+            button5.Location = new Point(10, 211);
+            button5.Margin = new Padding(3, 2, 3, 2);
             button5.Name = "button5";
-            button5.Size = new Size(244, 104);
+            button5.Size = new Size(214, 78);
             button5.TabIndex = 5;
             button5.Text = "ShowAudioProperties";
             button5.UseVisualStyleBackColor = true;
             button5.Click += button5_Click;
             // 
+            // button3
+            // 
+            button3.Location = new Point(10, 305);
+            button3.Name = "button3";
+            button3.Size = new Size(214, 70);
+            button3.TabIndex = 6;
+            button3.Text = "Nonlinear Quantization";
+            button3.UseVisualStyleBackColor = true;
+            button3.Click += button3_Click;
+            // 
+            // button4
+            // 
+            button4.Location = new Point(239, 9);
+            button4.Name = "button4";
+            button4.Size = new Size(185, 76);
+            button4.TabIndex = 7;
+            button4.Text = "Delta Modulation";
+            button4.UseVisualStyleBackColor = true;
+            button4.Click += button4_Click;
+            // 
+            // button6
+            // 
+            button6.Location = new Point(239, 97);
+            button6.Name = "button6";
+            button6.Size = new Size(185, 96);
+            button6.TabIndex = 8;
+            button6.Text = "Adaptive Delta Modulation";
+            button6.UseVisualStyleBackColor = true;
+            button6.Click += button6_Click;
+            // 
+            // button7
+            // 
+            button7.Location = new Point(239, 211);
+            button7.Name = "button7";
+            button7.Size = new Size(185, 78);
+            button7.TabIndex = 9;
+            button7.Text = "Decompression";
+            button7.UseVisualStyleBackColor = true;
+            button7.Click += button7_Click;
+            // 
             // Form1
             // 
             AllowDrop = true;
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1323, 748);
+            ClientSize = new Size(1158, 561);
+            Controls.Add(button7);
+            Controls.Add(button6);
+            Controls.Add(button4);
+            Controls.Add(button3);
             Controls.Add(button5);
             Controls.Add(button2);
             Controls.Add(button1);
+            Margin = new Padding(3, 2, 3, 2);
             Name = "Form1";
             Text = "Form1";
             DragDrop += Form1_DragDrop;
@@ -84,5 +136,9 @@
         private Button button1;
         private Button button2;
         private Button button5;
+        private Button button3;
+        private Button button4;
+        private Button button6;
+        private Button button7;
     }
 }
