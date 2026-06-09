@@ -49,6 +49,7 @@
             lblSpeed = new Label();
             cmbSampleRate = new ComboBox();
             label1 = new Label();
+            button8 = new Button();
             ((System.ComponentModel.ISupportInitialize)numStepSize).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numMinStep).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numMaxStep).BeginInit();
@@ -247,12 +248,23 @@
             label1.TabIndex = 29;
             label1.Text = "Sample Rate";
             // 
+            // button8
+            // 
+            button8.Location = new Point(273, 407);
+            button8.Name = "button8";
+            button8.Size = new Size(211, 93);
+            button8.TabIndex = 30;
+            button8.Text = "SaveAudioFile";
+            button8.UseVisualStyleBackColor = true;
+            button8.Click += button8_Click;
+            // 
             // Form1
             // 
             AllowDrop = true;
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1441, 748);
+            Controls.Add(button8);
             Controls.Add(label1);
             Controls.Add(cmbSampleRate);
             Controls.Add(lblSpeed);
@@ -308,5 +320,6 @@
         private Label lblSpeed;
         private ComboBox cmbSampleRate;
         private Label label1;
+        private Button button8;
     }
 }

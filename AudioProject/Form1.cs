@@ -13,13 +13,14 @@ namespace AudioProject
         private string audioFile;
         private AudioFileReader audioFileReader;
         private WaveOutEvent outputDevice;
-        private bool cancelRequested = false; 
+        private bool cancelRequested = false;
         private List<double> compressionRatioPoints = new List<double>();//////////////أنشأت قائمة لتخزين نسبة الضغط
         private long currentBytesWritten = 0;
         private long originalFileSize = 0;
         private List<double> speedPoints = new List<double>();
         private DateTime processingStartTime;/////////////////////أسجل وقت بداية الضغط ثم أشغل Timer لكي يحسب السرعة بشكل دوري أثناء التنفيذ
         private System.Windows.Forms.Timer speedTimer;//////////////////
+        String compressedFilePath;
         public Form1()
         {
             InitializeComponent();
@@ -220,7 +221,7 @@ namespace AudioProject
                         $"بالكيلوبايت: {kbAfter:F2} KB\n" +
                         $"بالميغابايت: {mbAfter:F2} MB\n\n" +
                         $"نسبة المساحة الموفرة: {savedRatio:F1}%";
-
+                    compressedFilePath = outputFile; 
                     MessageBox.Show(resultMessage, "Nonlinear Quantization");
                 }
             }
@@ -359,7 +360,7 @@ namespace AudioProject
                 $"الحجم بعد الضغط: {sizeAfter / 1024.0:F2} KB\n" +
                 $"نسبة التوفير: {ratio2:F2}%\n\n" +
                 tableText;
-
+            compressedFilePath = outputFile;
             MessageBox.Show(finalReport, "Delta Modulation");
         }
 
@@ -518,7 +519,7 @@ namespace AudioProject
                 $"الحجم بعد الضغط: {sizeAfter / 1024.0:F2} KB\n" +
                 $"نسبة التوفير: {ratio2:F2}%\n\n" +
                 tableText;
-
+            compressedFilePath = outputFile;
             MessageBox.Show(report, "ADM");
         }
         private void button7_Click(object sender, EventArgs e)
@@ -699,7 +700,7 @@ namespace AudioProject
             cancelRequested = true;
         }
 
-       private void panelGraph_Paint(object sender, PaintEventArgs e)
+        private void panelGraph_Paint(object sender, PaintEventArgs e)
         {
             if (compressionRatioPoints.Count < 2) return;
 
@@ -845,11 +846,37 @@ namespace AudioProject
             g.FillEllipse(Brushes.Yellow, lx - 4, ly - 4, 8, 8);
             g.DrawString($"{lastSpeed:F2} MB/s", new Font("Arial", 8, FontStyle.Bold), Brushes.Yellow, lx - 75, ly - 15);
         }
-    }
-    
+        //SaveAudioFile
+        private void button8_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(audioFile))
 
-         
+            {
+                MessageBox.Show("chose audio files", "FFFFF", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
+                return;
+            }
+
+            if (string.IsNullOrEmpty(compressedFilePath) || !File.Exists(compressedFilePath))
+
+            {
+                MessageBox.Show("Compress Audio File before saving ", "ddd", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+
+            }
+
+            SaveFileDialog sfd = new SaveFileDialog();
+            sfd.Filter = "RAW Audio Files (*.raw)|*.raw|All Files (*.*)|*.*";
+            if (sfd.ShowDialog() == DialogResult.OK)
+            {
+                File.Copy(compressedFilePath, sfd.FileName, true);
+            }
+        }
     }
+
+
+
+
+}
 
 
