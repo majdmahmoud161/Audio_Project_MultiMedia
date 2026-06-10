@@ -132,12 +132,12 @@ namespace AudioProject
             }
 
             originalFileSize = new FileInfo(audioFile).Length;
-            progressBar1.Value = 0;//////////////
-            lblProgress.Text = "0 %";///////////نسبة الشريط (شريط الانجاز) قبل البدء
+            progressBar1.Value = 0;
+            lblProgress.Text = "0 %";
 
             lblSpeed.Text = "⚡ جاري...";
-            processingStartTime = DateTime.Now;/////////////////////يسجل وقت البداية
-            speedTimer.Start();////////////////////يشغل المؤقت.
+            processingStartTime = DateTime.Now;
+            speedTimer.Start();
 
             string outputFile = Path.Combine(
                 Path.GetDirectoryName(audioFile),
@@ -145,9 +145,9 @@ namespace AudioProject
 
             using (var reader = new AudioFileReader(audioFile))
             {
-                int targetSampleRate = int.Parse(cmbSampleRate.SelectedItem.ToString());////مشان النستخدم يختار قيمة من comobox
+                int targetSampleRate = int.Parse(cmbSampleRate.SelectedItem.ToString());
 
-                var resampler = new WdlResamplingSampleProvider(reader, targetSampleRate);/////////////تعيد أخذ عينات الملف بالمعدل الجديد.
+                var resampler = new WdlResamplingSampleProvider(reader, targetSampleRate);
 
                 using (var writer = new BinaryWriter(File.Create(outputFile)))
                 {
@@ -181,22 +181,22 @@ namespace AudioProject
                                 byte compressedSample = NAudio.Codecs.MuLawEncoder.LinearToMuLawSample(pcmSample);
                                 writer.Write(compressedSample);
 
-                                currentBytesWritten++;////////////////////////////////كلما كتبت بيانات مضغوطة
+                                currentBytesWritten++;
                                 processedSamples++;
 
-                                int progress = (int)((processedSamples * 100) / totalSamples);/////////////////أثناء التنفيذ حساب نسبة الانجاز
+                                int progress = (int)((processedSamples * 100) / totalSamples);
                                 if (progress > 100) progress = 100;
 
                                 if (progress != progressBar1.Value)
                                 {
-                                    progressBar1.Value = progress;//////////////////////لتحديث شريط التقدم
-                                    lblProgress.Text = progress + " %";///////////////////لعرض النسبة رقمياً
+                                    progressBar1.Value = progress;
+                                    lblProgress.Text = progress + " %";
 
-                                    double ratio = (currentBytesWritten * 100.0) / originalFileSize;////////////////حساب double ratio مشان نسبة الضغط
+                                    double ratio = (currentBytesWritten * 100.0) / originalFileSize;
                                     if (ratio > 100) ratio = 100;
-                                    compressionRatioPoints.Add(ratio);/////////////////////  هون عم نخزن  القيمة يلي عم ترجع  
-                                    panelGraph.Invalidate();////////////////////////////يجبر الـ Panel على إعادة الرسم مباشرة
-                                    Application.DoEvents();/////////////////////////////////للسماح للواجهة بالتحديث أثناء تنفيذ
+                                    compressionRatioPoints.Add(ratio);  
+                                    panelGraph.Invalidate();
+                                    Application.DoEvents();
                                 }
                             }
                         }
@@ -205,7 +205,7 @@ namespace AudioProject
                     speedTimer.Stop();
                     progressBar1.Value = 100;
                     lblProgress.Text = "100 %";
-                    TimeSpan totalTime = DateTime.Now - processingStartTime;/////////يحسب كم ثانية مرت منذ بدء عملية الضغط
+                    TimeSpan totalTime = DateTime.Now - processingStartTime;
                     lblSpeed.Text = $"✅ انتهى في {totalTime.TotalSeconds:F1} ثانية";
 
                     long bytesBefore = new FileInfo(audioFile).Length;
@@ -226,7 +226,9 @@ namespace AudioProject
                         $"━━━ [ الحجم بعد الضغط ] ━━━\n" +
                         $"بالكيلوبايت: {kbAfter:F2} KB\n" +
                         $"بالميغابايت: {mbAfter:F2} MB\n\n" +
+                        $"⏱️ الزمن المستغرق: {totalTime.TotalSeconds:F2} ثانية\n\n" +
                         $"نسبة المساحة الموفرة: {savedRatio:F1}%";
+                        
                     compressedFilePath = outputFile;
                     MessageBox.Show(resultMessage, "Nonlinear Quantization");
                 }
@@ -260,7 +262,7 @@ namespace AudioProject
                 Path.GetFileNameWithoutExtension(audioFile) + "_Delta.raw");
 
             int targetSampleRate = int.Parse(cmbSampleRate.SelectedItem.ToString());
-            int stepSize = (int)numStepSize.Value;///////////////التحكم بحجم خطوة التكميم
+            int stepSize = (int)numStepSize.Value;
             int predictedValue = 0;
 
             string tableText = "📋 أول 10 عينات:\n";
@@ -370,6 +372,7 @@ namespace AudioProject
                 $"⚙️ حجم الخطوة المستخدم (Step Size): {stepSize}\n" +
                 $"الحجم قبل الضغط: {sizeBefore / 1024.0:F2} KB\n" +
                 $"الحجم بعد الضغط: {sizeAfter / 1024.0:F2} KB\n" +
+                $"⏱️ الزمن المستغرق: {totalTime.TotalSeconds:F2} ثانية\n\n" +
                 $"نسبة التوفير: {ratio2:F2}%\n\n" +
                 tableText;
             compressedFilePath = outputFile;
@@ -535,6 +538,7 @@ namespace AudioProject
               $"Max Step: {maxStep}\n\n" +
                 $"الحجم قبل الضغط: {sizeBefore / 1024.0:F2} KB\n" +
                 $"الحجم بعد الضغط: {sizeAfter / 1024.0:F2} KB\n" +
+                $"⏱️ الزمن المستغرق: {totalTime.TotalSeconds:F2} ثانية\n\n" +
                 $"نسبة التوفير: {ratio2:F2}%\n\n" +
                 tableText;
             compressedFilePath = outputFile;
