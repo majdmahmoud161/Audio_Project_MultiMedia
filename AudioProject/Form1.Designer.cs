@@ -50,6 +50,7 @@
             cmbSampleRate = new ComboBox();
             label1 = new Label();
             button8 = new Button();
+            button9 = new Button();
             ((System.ComponentModel.ISupportInitialize)numStepSize).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numMinStep).BeginInit();
             ((System.ComponentModel.ISupportInitialize)numMaxStep).BeginInit();
@@ -258,12 +259,23 @@
             button8.UseVisualStyleBackColor = true;
             button8.Click += button8_Click;
             // 
+            // button9
+            // 
+            button9.Location = new Point(11, 522);
+            button9.Name = "button9";
+            button9.Size = new Size(245, 86);
+            button9.TabIndex = 31;
+            button9.Text = "ResetAudioValue";
+            button9.UseVisualStyleBackColor = true;
+            button9.Click += button9_Click;
+            // 
             // Form1
             // 
             AllowDrop = true;
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1441, 748);
+            Controls.Add(button9);
             Controls.Add(button8);
             Controls.Add(label1);
             Controls.Add(cmbSampleRate);
@@ -321,5 +333,6 @@
         private ComboBox cmbSampleRate;
         private Label label1;
         private Button button8;
+        private Button button9;
     }
 }

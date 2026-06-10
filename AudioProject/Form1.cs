@@ -221,7 +221,7 @@ namespace AudioProject
                         $"بالكيلوبايت: {kbAfter:F2} KB\n" +
                         $"بالميغابايت: {mbAfter:F2} MB\n\n" +
                         $"نسبة المساحة الموفرة: {savedRatio:F1}%";
-                    compressedFilePath = outputFile; 
+                    compressedFilePath = outputFile;
                     MessageBox.Show(resultMessage, "Nonlinear Quantization");
                 }
             }
@@ -852,7 +852,7 @@ namespace AudioProject
             if (string.IsNullOrEmpty(audioFile))
 
             {
-                MessageBox.Show("chose audio files", "FFFFF", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("chose audio files", "majd", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
                 return;
             }
@@ -860,7 +860,7 @@ namespace AudioProject
             if (string.IsNullOrEmpty(compressedFilePath) || !File.Exists(compressedFilePath))
 
             {
-                MessageBox.Show("Compress Audio File before saving ", "ddd", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Compress Audio File before saving ", "majd", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
 
             }
@@ -872,6 +872,41 @@ namespace AudioProject
                 File.Copy(compressedFilePath, sfd.FileName, true);
             }
         }
+
+        //reset audio value
+        private void button9_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(audioFile))
+            {
+                MessageBox.Show("chose audio file first", "majd", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            numStepSize.Value = 500;
+            numMinStep.Value = 100;
+            numMaxStep.Value = 8000;
+            cmbSampleRate.SelectedIndex = 0;
+
+
+            cancelRequested = false;
+            currentBytesWritten = 0;
+            compressedFilePath = null;
+
+
+            compressionRatioPoints.Clear();
+            speedPoints.Clear();
+            panelGraph.Invalidate(); 
+            panelSpeed.Invalidate();
+
+
+            progressBar1.Value = 0;
+            lblProgress.Text = "0 %";
+            lblSpeed.Text = " Ready";
+
+
+            MessageBox.Show("Reset done!", "reset values", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        
+    }
     }
 
 
