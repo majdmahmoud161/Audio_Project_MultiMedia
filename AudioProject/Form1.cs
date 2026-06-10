@@ -165,7 +165,13 @@ namespace AudioProject
                                 lblSpeed.Text = "❌ تم الإلغاء";
                                 progressBar1.Value = 0;
                                 lblProgress.Text = "Cancelled";
-                                MessageBox.Show("تم إلغاء عملية Nonlinear Quantization");
+
+                                writer.Close();
+
+                                if (File.Exists(outputFile))
+                                    File.Delete(outputFile);
+
+                                MessageBox.Show("تم إلغاء العملية وحذف الملف الناتج");
                                 return;
                             }
 
@@ -281,7 +287,13 @@ namespace AudioProject
                         lblSpeed.Text = "❌ تم الإلغاء";
                         progressBar1.Value = 0;
                         lblProgress.Text = "Cancelled";
-                        MessageBox.Show("تم إلغاء عملية Delta Modulation");
+
+                        writer.Close();
+
+                        if (File.Exists(outputFile))
+                            File.Delete(outputFile);
+
+                        MessageBox.Show("تم إلغاء العملية وحذف الملف الناتج");
                         return;
                     }
 
@@ -392,10 +404,10 @@ namespace AudioProject
 
             int predictedValue = 0;
             int targetSampleRate = int.Parse(cmbSampleRate.SelectedItem.ToString());
-            int initialStepSize = (int)numStepSize.Value;//////////////هون القيمة يلي نحنا اخترناها البدائية
-            int stepSize = initialStepSize;                 /////////////////////القيمة يلي وصلتلها الخوارزمية بعد التكيف مع الاشارة
-            int minStep = (int)numMinStep.Value;/////////////التحكم بحدود الخوارزمية
-            int maxStep = (int)numMaxStep.Value;/////////////التحكم بحدود الخوارزمية
+            int initialStepSize = (int)numStepSize.Value;
+            int stepSize = initialStepSize;                
+            int minStep = (int)numMinStep.Value;
+            int maxStep = (int)numMaxStep.Value;
             int previousBit = -1;
 
             string tableText = "📋 أول 10 عينات ADM\n";
@@ -422,7 +434,13 @@ namespace AudioProject
                         lblSpeed.Text = "❌ تم الإلغاء";
                         progressBar1.Value = 0;
                         lblProgress.Text = "Cancelled";
-                        MessageBox.Show("تم إلغاء عملية ADM");
+
+                        writer.Close();
+
+                        if (File.Exists(outputFile))
+                            File.Delete(outputFile);
+
+                        MessageBox.Show("تم إلغاء العملية وحذف الملف الناتج");
                         return;
                     }
 
@@ -710,10 +728,10 @@ namespace AudioProject
             int w = panelGraph.Width;
             int h = panelGraph.Height;
 
-            // خلفية
+            
             g.Clear(Color.FromArgb(20, 20, 30));
 
-            // رسم الـ Grid
+            
             Pen gridPen = new Pen(Color.FromArgb(50, 255, 255, 255), 1);
             for (int i = 0; i <= 10; i++)
             {
@@ -723,7 +741,7 @@ namespace AudioProject
                 g.DrawLine(gridPen, x, 0, x, h);
             }
 
-            // تسميات المحور Y
+            
             Font labelFont = new Font("Arial", 7);
             for (int i = 0; i <= 10; i++)
             {
@@ -732,10 +750,10 @@ namespace AudioProject
                 g.DrawString(percent + "%", labelFont, Brushes.LightGray, 2, y);
             }
 
-            // عنوان
+         
             g.DrawString("نسبة الضغط أثناء التنفيذ", new Font("Arial", 9, FontStyle.Bold), Brushes.White, w / 2 - 70, 5);
 
-            // خط الرسم
+           
             Pen linePen = new Pen(Color.Cyan, 2);
             int total = compressionRatioPoints.Count;
 
@@ -744,33 +762,33 @@ namespace AudioProject
                 int x1 = (i - 1) * w / (total - 1);
                 int x2 = i * w / (total - 1);
 
-                // نسبة الضغط: كلما صغرت النسبة → الضغط أكثر → ارسمها من الأعلى
+               
                 int y1 = h - (int)(compressionRatioPoints[i - 1] * h / 100.0);
                 int y2 = h - (int)(compressionRatioPoints[i] * h / 100.0);
 
                 g.DrawLine(linePen, x1, y1, x2, y2);
             }
 
-            // النقطة الأخيرة مع قيمتها
+           
             if (total >= 1)
             {
-                double lastVal = compressionRatioPoints[total - 1];//////////////////////الحصول على آخر قيمة ضغط تم الوصول إليها
+                double lastVal = compressionRatioPoints[total - 1];
                 int lx = (total - 1) * w / Math.Max(total - 1, 1);
                 int ly = h - (int)(lastVal * h / 100.0);
-                g.FillEllipse(Brushes.Yellow, lx - 4, ly - 4, 8, 8);////////////وضعت دائرة صفراء على آخر نقطة لتكون واضحة للمستخدم
+                g.FillEllipse(Brushes.Yellow, lx - 4, ly - 4, 8, 8);
                 g.DrawString($"{lastVal:F1}%", new Font("Arial", 8, FontStyle.Bold), Brushes.Yellow, lx + 5, ly - 10);
             }
         }
 
         private void SpeedTimer_Tick(object sender, EventArgs e)
         {
-            TimeSpan elapsed = DateTime.Now - processingStartTime;////////////////يحسب كم ثانية مرت منذ بدء عملية الضغط.
+            TimeSpan elapsed = DateTime.Now - processingStartTime;
 
-            if (elapsed.TotalSeconds > 0 && currentBytesWritten > 0)////////////نتأكد أن هناك وقت مرّ فعلاً وأن البرنامج كتب بيانات للملف.
+            if (elapsed.TotalSeconds > 0 && currentBytesWritten > 0)
             {
-                double speedMBps = (currentBytesWritten / 1024.0 / 1024.0) / elapsed.TotalSeconds;/////حساب سرعة المعالجة
-                speedPoints.Add(speedMBps);/////////////////كل قيمة سرعة يتم حسابها تضاف إلى القائمة
-                panelSpeed.Invalidate();//////////////اعادة الر سم على panel
+                double speedMBps = (currentBytesWritten / 1024.0 / 1024.0) / elapsed.TotalSeconds;
+                speedPoints.Add(speedMBps);
+                panelSpeed.Invalidate();
 
                 if (speedMBps >= 1)
                     lblSpeed.Text = $"⚡ {speedMBps:F2} MB/s";
@@ -815,7 +833,7 @@ namespace AudioProject
 
             int total = speedPoints.Count;
 
-            // تعبئة تحت الخط
+           
             System.Drawing.Drawing2D.GraphicsPath path = new System.Drawing.Drawing2D.GraphicsPath();
             path.AddLine(0, h, 0, h - (int)(speedPoints[0] * h / maxSpeed));
             for (int i = 1; i < total; i++)
@@ -828,7 +846,7 @@ namespace AudioProject
             path.CloseFigure();
             g.FillPath(new SolidBrush(Color.FromArgb(40, 0, 255, 0)), path);
 
-            // رسم الخط
+          
             Pen linePen = new Pen(Color.LimeGreen, 2);
             for (int i = 1; i < total; i++)
             {
@@ -839,7 +857,7 @@ namespace AudioProject
                 g.DrawLine(linePen, x1, y1, x2, y2);
             }
 
-            // النقطة الأخيرة
+           
             double lastSpeed = speedPoints[total - 1];
             int lx = w - 1;
             int ly = h - (int)(lastSpeed * h / maxSpeed);
